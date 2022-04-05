@@ -2,11 +2,11 @@
 
 from aiogram import types
 from loader import dp
-from keyboards import inline, reply
+from keyboards import inline, reply, ctypes
 from statesgroup import SettingsMenu
 
 
-@dp.message_handler(text="⚙️ Настройки")
+@dp.message_handler(text="⚙️ Настройки", state="*")
 async def show_settings(message: types.Message):
     await SettingsMenu.choose_mailing_system.set()
     await message.answer(

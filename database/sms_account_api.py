@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .models import SmsAccount
+from sqlalchemy.sql import and_
 
 
 async def create(owner_tg_id, name, access_key, mailing_system):
@@ -15,18 +16,20 @@ async def create(owner_tg_id, name, access_key, mailing_system):
 
 
 async def delete(record_id):
-    await SmsAccount.query.where(
-        SmsAccount.id == record_id,
-    ).delete()
+    account = await get_one(record_id)
+    await account.delete()
 
 
 async def get_all(owner_tg_id, mailing_system):
     records = await SmsAccount.query.where(
-        SmsAccount.owner_tg_id == owner_tg_id and \
-        SmsAccount.mailing_system == mailing_system,
+        and_(
+            SmsAccount.owner_tg_id == owner_tg_id,
+            SmsAccount.mailing_system == mailing_system,
+        )
     ).gino.all()
 
     return records
+
 
 async def get_one(record_id):
     record = await SmsAccount.query.where(

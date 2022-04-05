@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from aiogram import types
+
+from handlers import callbacks
 from . import ctypes
 
 
@@ -52,7 +54,10 @@ async def accounts_menu(account_records):
     keyboard = types.InlineKeyboardMarkup().add(
         types.InlineKeyboardButton(
             text="🆕 Добавить аккаунт",
-            callback_data=ctypes.accounts_menu.new(button="create_accont")
+            callback_data=ctypes.accounts_menu.new(
+                button="create_accont",
+                id="",
+            )
         )
     )
 
@@ -60,8 +65,74 @@ async def accounts_menu(account_records):
         keyboard.add(
             types.InlineKeyboardButton(
                 text=record.name,
-                callback_data=ctypes.accounts_menu.new(button=f"account#{record.id}")
+                callback_data=ctypes.accounts_menu.new(
+                    button="account",
+                    id=record.id,
+                )
             )
         )
+
+    keyboard.add(
+        types.InlineKeyboardButton(
+            text="↩️ Назад",
+            callback_data=ctypes.accounts_menu.new(
+                button="back",
+                id="",
+            )
+        )
+    )
     
     return keyboard
+
+
+async def edit_account_menu(record_id, mailing_system):
+    return types.InlineKeyboardMarkup().row(
+        types.InlineKeyboardButton(
+            text="Именить название",
+            callback_data=ctypes.edit_account.new(
+                action="edit_name",
+                id=record_id,
+            ),
+        ),
+        types.InlineKeyboardButton(
+            text="Именить ключ доступа",
+            callback_data=ctypes.edit_account.new(
+                action="edit_access_key",
+                id=record_id,
+            ),
+        ),
+    ).add(
+        types.InlineKeyboardButton(
+            text="Удалить аккаунт",
+            callback_data=ctypes.edit_account.new(
+                action="request_delete_account",
+                id=record_id,
+            ),
+        ),
+    ).add(
+        types.InlineKeyboardButton(
+            text="Назад",
+            callback_data=ctypes.mailing_system.new(
+                type=mailing_system,
+            ),
+        ), 
+    )
+
+
+async def delete_account_menu(record_id):
+    return types.InlineKeyboardMarkup().row(
+        types.InlineKeyboardButton(
+            text="Да",
+            callback_data=ctypes.edit_account.new(
+                action="confirm_delete",
+                id=record_id,
+            )
+        ),
+        types.InlineKeyboardButton(
+            text="Нет",
+            callback_data=ctypes.accounts_menu.new(
+                button="account",
+                id=record_id,
+            )
+        ),
+    )

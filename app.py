@@ -7,7 +7,7 @@ from database import create_db
 
 async def on_startup(dp):
     import middlewares, handlers
-    await create_db(drop_all=True)
+    await create_db(drop_all=False)
 
 
 if __name__ == "__main__":
