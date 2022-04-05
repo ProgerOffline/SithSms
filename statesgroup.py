@@ -16,3 +16,13 @@ class CreateAccount(StatesGroup):
 class EditAccount(StatesGroup):
     edit_name = State()
     edit_access_key = State()
+
+
+class CreateTemplate(StatesGroup):
+    get_name = State()
+    get_content = State()
+
+
+class EditTemplate(StatesGroup):
+    edit_name = State()
+    edit_content = State()

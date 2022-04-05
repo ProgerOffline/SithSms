@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from aiogram import types
-
-from handlers import callbacks
 from . import ctypes
 
 
@@ -132,6 +130,85 @@ async def delete_account_menu(record_id):
             text="Нет",
             callback_data=ctypes.accounts_menu.new(
                 button="account",
+                id=record_id,
+            )
+        ),
+    )
+
+
+async def templates_menu(templates_records):
+    keyboard = types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton(
+            text="🆕 Добавить шаблон",
+            callback_data=ctypes.templates_menu.new(
+                button="create_template",
+                id="",
+            ),
+        ),
+    )
+
+    for record in templates_records:
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text=record.name,
+                callback_data=ctypes.templates_menu.new(
+                    button="template",
+                    id=record.id,
+                ),
+            ),
+        )
+
+    return keyboard
+
+
+async def edit_template_menu(record_id):
+    return types.InlineKeyboardMarkup().row(
+        types.InlineKeyboardButton(
+            text="Именить название",
+            callback_data=ctypes.edit_template.new(
+                action="edit_name",
+                id=record_id,
+            ),
+        ),
+        types.InlineKeyboardButton(
+            text="Именить текст",
+            callback_data=ctypes.edit_template.new(
+                action="edit_content",
+                id=record_id,
+            ),
+        ),
+    ).add(
+        types.InlineKeyboardButton(
+            text="Удалить шаблон",
+            callback_data=ctypes.edit_template.new(
+                action="request_delete_tempalte",
+                id=record_id,
+            ),
+        ),
+    ).add(
+        types.InlineKeyboardButton(
+            text="Назад",
+            callback_data=ctypes.edit_template.new(
+                action="back",
+                id="",
+            ),
+        ), 
+    )
+
+
+async def delete_template_menu(record_id):
+    return types.InlineKeyboardMarkup().row(
+        types.InlineKeyboardButton(
+            text="Да",
+            callback_data=ctypes.edit_template.new(
+                action="confirm_delete",
+                id=record_id,
+            )
+        ),
+        types.InlineKeyboardButton(
+            text="Нет",
+            callback_data=ctypes.templates_menu.new(
+                button="template",
                 id=record_id,
             )
         ),
