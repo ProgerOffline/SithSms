@@ -1,5 +1,5 @@
 aiogram
-aiohtt
+aiohttp
 aiosigna
 async-timeou
 asyncp
