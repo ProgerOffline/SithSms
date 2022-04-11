@@ -2,7 +2,7 @@ aiogram
 aiohttp
 aiosignal
 async-timeout
-asyncp
+asyncpg
 attr
 Babe
 beautifulsoup
