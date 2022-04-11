@@ -1,7 +1,7 @@
 aiogram
 aiohttp
-aiosigna
-async-timeou
+aiosignal
+async-timeout
 asyncp
 attr
 Babe
