@@ -6,7 +6,7 @@ asyncpg
 attr
 Babe
 bs4
-certif
+certifi
 charset-normalize
 environs
 frozenlist
