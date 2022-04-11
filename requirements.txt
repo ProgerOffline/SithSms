@@ -7,7 +7,7 @@ attr
 Babe
 bs4
 certifi
-charset-normalize
+charset-normalizer
 environs
 frozenlist
 gino
