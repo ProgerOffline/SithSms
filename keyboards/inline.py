@@ -83,6 +83,33 @@ async def accounts_menu(account_records):
     return keyboard
 
 
+async def select_account_menu(account_records):
+    keyboard = types.InlineKeyboardMarkup()
+
+    for record in account_records:
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text=record.name,
+                callback_data=ctypes.select_account_menu.new(
+                    action="select",
+                    id=record.id,
+                )
+            )
+        )
+
+    keyboard.add(
+        types.InlineKeyboardButton(
+            text="↩️ Назад",
+            callback_data=ctypes.select_account_menu.new(
+                action="back",
+                id="",
+            )
+        )
+    )
+    
+    return keyboard
+
+
 async def edit_account_menu(record_id, mailing_system):
     return types.InlineKeyboardMarkup().row(
         types.InlineKeyboardButton(
@@ -157,6 +184,33 @@ async def templates_menu(templates_records):
                 ),
             ),
         )
+
+    return keyboard
+
+
+async def select_template_menu(templates_records):
+    keyboard = types.InlineKeyboardMarkup()
+
+    for record in templates_records:
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text=record.name,
+                callback_data=ctypes.select_template_menu.new(
+                    action="template",
+                    id=record.id,
+                ),
+            ),
+        )
+
+    keyboard.add(
+        types.InlineKeyboardButton(
+            text="↩️ Назад",
+            callback_data=ctypes.select_template_menu.new(
+                action="back",
+                id="",
+            )
+        )
+    )
 
     return keyboard
 

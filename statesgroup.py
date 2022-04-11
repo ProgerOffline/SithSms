@@ -26,3 +26,9 @@ class CreateTemplate(StatesGroup):
 class EditTemplate(StatesGroup):
     edit_name = State()
     edit_content = State()
+
+
+class CreateSmsSending(StatesGroup):
+    choose_mailing_system = State()
+    choose_account = State()
+    choose_template = State()

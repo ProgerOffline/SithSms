@@ -8,8 +8,9 @@ from data.config import BOT_TOKEN
 from logzero import logger, logfile
 
 
-logfile("bot_log.log")
+logfile("logs/bot_log.log", maxBytes=10_000_000, backupCount=20)
 
 bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
+    
