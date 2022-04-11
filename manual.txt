@@ -24,6 +24,7 @@ sudo apt-get install python3-pip postgresql git python3.8-venv
 
 #### Запускаем базу данных
 sudo systemctl enable postgresql
+sudo systemctl start postgresql
 
 #### Меняем пароль для пользователя базы данных
 sudo passwd postgres
@@ -108,3 +109,4 @@ ll
 Среди списка файлов, должен быть .env файл
  
 #### Запускаем бота
+nohup python3 app.py &
