@@ -107,20 +107,38 @@ DB_HOST=127.0.0.1:5432
 ctrl + o
 и жмем enter
 
-#### Закрываем из файл
+#### Закрываем файл
 ctrl + x
 
 #### Проверяем создался ли файл
 ll
 
 Среди списка файлов, должен быть .env файл
- 
+
+#### Создаем автоматический запуск бота при старте системы
+cd /etc/systemd/system
+nano bot.service
+
+Вставляем в файл эти данные
+[Unit]
+Description=Start Telegram bot on boot system
+
+[Service]
+User=root
+WorkingDirectory=/home/sithsms/
+ExecStart=/home/sithsms/venv/bin/python3 app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+#### Сохраняем файл
+ctrl + o
+и жмем enter
+
+#### Закрываем файл
+ctrl + x
+
 #### Запускаем бота
-nohup python3 app.py &
-
-Ждем несколько секунд
-Потом жмем ctrl + c
-
-И всё бот запущен
-
-После можете закрыть окно командной строки
+sudo systemctl enable bot.service
+sudo systemctl start bot.service
