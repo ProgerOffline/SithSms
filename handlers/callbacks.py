@@ -126,6 +126,8 @@ async def select_template_menu(
 
     # Запуск скрипта рассылки
     logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template.content}, {file_path}")
+    os.system(f"nohup /home/sithsms/venv/bin/python3 sms_sender.py {mailing_system} {access_key} '{template_content}' {file_path} &")
+
     sender = SmsSender(phones_file_path=file_path)
     count_valid_phones = len(sender.phones_list)
 
@@ -134,8 +136,6 @@ async def select_template_menu(
 
     template_content = template.content.replace("'", '\'')
     template_content = template.content.replace('"', '\"')
-
-    os.system(f"nohup /home/sithsms/venv/bin/python3 sms_sender.py {mailing_system} {access_key} '{template_content}' {file_path} &")
 
     await call.answer()
     await state.finish()
@@ -161,7 +161,7 @@ async def get_fast_template(message: types.Message, state: FSMContext):
     
     # Запуск скрипта рассылки
     logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template_content}, {file_path}")
-    os.system(f"nohup /home/sithsms/venv/bin/python3 sms_sender.py {mailing_system} {access_key} '{template_content}' {file_path} &")
+    os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} '{template_content}' {file_path} &")
 
     sender = SmsSender(phones_file_path=file_path)
     count_valid_phones = len(sender.phones_list)
