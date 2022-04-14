@@ -13,10 +13,19 @@ from statesgroup import (CreateAccount, EditAccount,
 async def get_account_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['account_name'] = message.text
-    
+        mailing_system = data['mailing_system']
+
+    # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
+    # Пароль от аккаунта
+    if mailing_system == "sms-sms":
+        text = "‼️ Важно ‼️\n" +\
+            "Введите пароль от аккаунта"
+    else:
+        text = "Введите ключ доступа от аккаунта"
+
     await CreateAccount.get_access_key.set()
     await message.answer(
-        text="Введите ключ доступа от аккаунта",
+        text=text,
     )
 
 

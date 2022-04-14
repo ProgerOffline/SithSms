@@ -54,12 +54,24 @@ async def back_mailing_system_menu(call: types.CallbackQuery):
     ctypes.accounts_menu.filter(button="create_accont"),
     state=SettingsMenu.edit_accounts,
 )
-async def create_account(call: types.CallbackQuery):
-    await CreateAccount.get_name.set()
+async def create_account(call: types.CallbackQuery, state: FSMContext):
     await call.answer()
     await call.message.delete()
+    await CreateAccount.get_name.set()
+    
+    async with state.proxy() as data:
+        mailing_system = data['mailing_system']
+    
+    # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
+    # Пароль от аккаунта
+    if mailing_system == "sms-sms":
+        text = "‼️ Важно ‼️\n" +\
+            "Введите номер телефона, на который зарегистрирован аккаунт"
+    else:
+        text = "Введите название аккаунта"
+
     await call.message.answer(
-        text="Введите название аккаунта"
+        text=text,
     )
 
 

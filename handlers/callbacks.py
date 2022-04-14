@@ -125,17 +125,24 @@ async def select_template_menu(
 
 
     # Запуск скрипта рассылки
-    logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template.content}, {file_path}")
-    os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} '{template.content}' {file_path} &")
+    template_content = template.content.replace("'", '\'')
+    template_content = template.content.replace('"', '\"')
+
+    logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template_content}, {file_path}")
+    if mailing_system == "sms-sms":
+        # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
+        # Пароль от аккаунта
+        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} &")
+
+    else:
+        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None &")
+
 
     sender = SmsSender(phones_file_path=file_path)
     count_valid_phones = len(sender.phones_list)
 
     current_data = datetime.now()
     current_data = current_data.strftime("%m/%d/%Y %H:%M:%S")
-
-    template_content = template.content.replace("'", '\'')
-    template_content = template.content.replace('"', '\"')
 
     await call.answer()
     await state.finish()
@@ -160,17 +167,25 @@ async def get_fast_template(message: types.Message, state: FSMContext):
         account_name = data['account_name']
     
     # Запуск скрипта рассылки
+    template_content = template_content.replace("'", '\'')
+    template_content = template_content.replace('"', '\"')
+
     logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template_content}, {file_path}")
-    os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} '{template_content}' {file_path} &")
+    
+    if mailing_system == "sms-sms":
+        # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
+        # Пароль от аккаунта
+        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} &")
+
+    else:
+        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None &")
+
 
     sender = SmsSender(phones_file_path=file_path)
     count_valid_phones = len(sender.phones_list)
 
     current_data = datetime.now()
     current_data = current_data.strftime("%m/%d/%Y %H:%M:%S")
-
-    template_content = template_content.replace("'", '\'')
-    template_content = template_content.replace('"', '\"')
 
     await state.finish()
     await message.answer(

@@ -45,6 +45,11 @@ async def settings_menu():
             text="🌐 BSG World",
             callback_data=ctypes.mailing_system.new(type="bsg-world"),
         ),
+
+        types.InlineKeyboardButton(
+            text="📨 СМС-СМС",
+            callback_data=ctypes.mailing_system.new(type="sms-sms"),
+        ),
     )
 
 

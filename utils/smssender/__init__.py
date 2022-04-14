@@ -5,6 +5,7 @@ import phonenumbers
 
 from logzero import logger
 from .smsflyservice import SmsFlyService
+from .smssmsservice import SmsSmsService
 
 
 class SmsSender:
@@ -13,15 +14,18 @@ class SmsSender:
         mailing_system: str='',
         access_key: str='',
         template_content: str='',
+        account_name: str='',
     ):
 
         self.mailing_system = mailing_system
         self.access_key = access_key
         self.template_content = template_content
         self.phones_list =  self.__sort_phones(phones_file_path)
+        self.account_name = account_name
 
         self.mailing_services = {
             "sms-fly" : SmsFlyService,
+            "sms-sms" : SmsSmsService,
         }
     
     def __sort_phones(self, phones_file_path: str) -> list:
@@ -41,7 +45,7 @@ class SmsSender:
     
     def start_sending_sms(self):
         service_obj = self.mailing_services[self.mailing_system]
-        service = service_obj(self.access_key)
+        service = service_obj(access_key=self.access_key, account_name=self.account_name)
 
         for phone_number in self.phones_list:
             response = service.send_message_to_phone_number(
