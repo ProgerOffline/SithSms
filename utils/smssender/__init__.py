@@ -37,10 +37,13 @@ class SmsSender:
 
         phones_sorted_list = []
         for phone in phones_unsroted_list:
-            if phonenumbers.is_valid_number(phonenumbers.parse(phone, "UA")) and \
-                phone not in phones_sorted_list:
-                phones_sorted_list.append(phone)
-            
+            try:
+                if phonenumbers.is_valid_number(phonenumbers.parse(phone, "UA")) and \
+                    phone not in phones_sorted_list:
+                    phones_sorted_list.append(phone)
+            except:
+                continue
+
         return phones_sorted_list
     
     def start_sending_sms(self):
