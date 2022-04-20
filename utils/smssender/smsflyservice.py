@@ -4,7 +4,7 @@ import requests
 
 
 class SmsFlyService:
-    def __init__(self, access_key: str):
+    def __init__(self, access_key: str, account_name: str):
         self.access_key = access_key
         self.api_url = "https://sms-fly.ua/api/v2/api.php"
 
