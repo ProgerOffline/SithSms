@@ -4,9 +4,10 @@ import requests
 
 
 class SmsFlyService:
-    def __init__(self, access_key: str, account_name: str):
+    def __init__(self, access_key: str, account_name: str, proxy: str):
         self.access_key = access_key
         self.api_url = "https://sms-fly.ua/api/v2/api.php"
+        self.proxy = {"https" : proxy}
 
     def send_message_to_phone_number(self, phone_number: str, text: str):
         request_data = {
@@ -27,5 +28,5 @@ class SmsFlyService:
             }
         }
 
-        response = requests.post(self.api_url, json=request_data)
+        response = requests.post(self.api_url, json=request_data, proxies=self.proxy)
         return response.text

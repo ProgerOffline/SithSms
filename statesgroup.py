@@ -6,6 +6,8 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 class SettingsMenu(StatesGroup):
     choose_mailing_system = State()
     edit_accounts = State()
+    edit_proxies = State()
+    get_proxies = State()
 
 
 class CreateAccount(StatesGroup):

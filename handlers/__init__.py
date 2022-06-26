@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from . import proxy
 from . import commands
 from . import documents
 from . import state

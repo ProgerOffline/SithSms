@@ -61,6 +61,13 @@ async def accounts_menu(account_records):
                 button="create_accont",
                 id="",
             )
+        ),
+        types.InlineKeyboardButton(
+            text="🌐 Прокси",
+            callback_data=ctypes.proxy.new(
+                action="show_all",
+                id="",
+            )
         )
     )
 
@@ -271,4 +278,62 @@ async def delete_template_menu(record_id):
                 id=record_id,
             )
         ),
+    )
+
+
+async def proxy_settings(proxies):
+    keyboard = types.InlineKeyboardMarkup(
+        row_width=2,
+    ).add(
+        types.InlineKeyboardButton(
+            text="🔄 Загрузить прокси",
+            callback_data=ctypes.proxy.new(
+                action="load_proxy",
+                id="",
+            )
+        ),
+    )
+
+    for proxy in proxies:
+        status = "✅" if proxy.status == "active" else "❌"
+        keyboard.insert(
+            types.InlineKeyboardButton(
+                text=f"{status} {proxy.ip}:{proxy.port}",
+                callback_data=ctypes.proxy.new(
+                    action="show_one",
+                    id=proxy.db_id,
+                )
+            )
+        )
+
+    keyboard.add(
+        types.InlineKeyboardButton(
+            text="Назад",
+            callback_data=ctypes.proxy.new(
+                action="back",
+                id="",
+            ),
+        ), 
+    )
+
+    return keyboard
+
+
+async def edit_proxy(proxy):
+    return types.InlineKeyboardMarkup().add(
+        types.InlineKeyboardButton(
+            text="🚮 Удалить",
+            callback_data=ctypes.proxy.new(
+                action="delete",
+                id=proxy.db_id,
+            )
+        ),
+    ).add(
+        types.InlineKeyboardButton(
+            text="Назад",
+            callback_data=ctypes.proxy.new(
+                action="back_menu",
+                id="",
+            ),
+        ), 
     )
