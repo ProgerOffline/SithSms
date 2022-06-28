@@ -8,7 +8,7 @@ from utils.smssender import SmsSender
 
 
 async def main(mailing_system, access_key, template_content, phones_file_path, account_name):
-    await create_db()
+    await create_db(drop_all=False)
     # Запускаем рассылку
     proxy = await proxy_api.get_active()
     service = SmsSender(
@@ -23,7 +23,7 @@ async def main(mailing_system, access_key, template_content, phones_file_path, a
     try:
         service.start_sending_sms()
     except Exception as e:
-        print(e)
+        print(e)    
         await proxy_api.set_lock_status(proxy.db_id)
 
 

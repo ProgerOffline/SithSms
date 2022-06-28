@@ -50,7 +50,7 @@ class SmsSender:
 
         return phones_sorted_list
     
-    def start_sending_sms(self):
+    def start_sending_sms(self, proxy):
         service_obj = self.mailing_services[self.mailing_system]
         service = service_obj(
             access_key=self.access_key,
