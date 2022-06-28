@@ -16,7 +16,6 @@ class SmsSender:
         access_key: str='',
         template_content: str='',
         account_name: str='',
-        proxy=None,
     ):
 
         self.mailing_system = mailing_system
@@ -24,8 +23,6 @@ class SmsSender:
         self.template_content = template_content
         self.phones_list =  self.__sort_phones(phones_file_path)
         self.account_name = account_name
-        logger.info(proxy)
-        self.proxy = f"http://{proxy.login}:{proxy.password}@{proxy.ip}:{proxy.port}"
 
         self.mailing_services = {
             "sms-fly" : SmsFlyService,
@@ -51,12 +48,15 @@ class SmsSender:
 
         return phones_sorted_list
     
-    def start_sending_sms(self, proxy):
+    def start_sending_sms(self, proxy=""):
         service_obj = self.mailing_services[self.mailing_system]
+
+        if proxy != "":
+            proxy = f"http://{proxy.login}:{proxy.password}@{proxy.ip}:{proxy.port}"
         service = service_obj(
             access_key=self.access_key,
             account_name=self.account_name,
-            proxy=self.proxy,
+            proxy=proxy,
         )
 
         for phone_number in self.phones_list:

@@ -17,11 +17,10 @@ async def main(mailing_system, access_key, template_content, phones_file_path, a
         template_content=template_content,
         phones_file_path=phones_file_path,
         account_name=account_name,
-        proxy=proxy,
     )
 
     try:
-        service.start_sending_sms()
+        service.start_sending_sms(proxy)
     except Exception as e:
         print(e)    
         await proxy_api.set_lock_status(proxy.db_id)
