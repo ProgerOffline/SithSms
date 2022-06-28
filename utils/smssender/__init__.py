@@ -24,6 +24,7 @@ class SmsSender:
         self.template_content = template_content
         self.phones_list =  self.__sort_phones(phones_file_path)
         self.account_name = account_name
+        logger.info(proxy)
         self.proxy = f"http://{proxy.login}:{proxy.password}@{proxy.ip}:{proxy.port}"
 
         self.mailing_services = {
