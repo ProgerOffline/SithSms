@@ -34,7 +34,7 @@ class SmsFlyService:
         }
 
         response = requests.post(self.api_url, json=request_data, proxies=self.proxy)
-        return response.text
+        return response.json()
 
     def get_balance(self):
         request_data = {
@@ -49,4 +49,22 @@ class SmsFlyService:
         else:
             response = requests.post(self.api_url, json=request_data)
 
-        return response.text
+        return response.json()
+
+    def get_message_status(self, message_id: str) -> str:
+        request_data = {
+            "auth": {
+                "key": self.access_key,
+            },
+            "action": "GETMESSAGESTATUS",
+            "data": {
+                "messageID": message_id,
+            }
+        }
+
+        if self.use_proxy:
+            response = requests.post(self.api_url, json=request_data, proxies=self.proxy)
+        else:
+            response = requests.post(self.api_url, json=request_data)
+
+        return response.json()

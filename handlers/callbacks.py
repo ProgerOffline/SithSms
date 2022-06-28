@@ -67,11 +67,48 @@ async def choose_account(
     async with state.proxy() as data:
         data['account_name'] = account.name
         data['access_key'] = account.access_key
+        mailing_system = data['mailing_system']
     
+    if mailing_system != "sms-fly":
+        service = SmsSender(
+            access_key=account.access_key,
+            account_name=account.name,
+            mailing_system=mailing_system,
+        )
+
+        await CreateSmsSending.choose_alpha_name.set()
+        await call.answer()
+        await call.message.edit_text(
+            text="Выберите альфа имя",
+            reply_markup=await inline.select_alpha_name(service.get_alpha_names())
+        )
+    else:    
+        templates_records = await tempalte_api.get_all(
+            owner_tg_id=call.message.chat.id,
+        )
+        await CreateSmsSending.choose_template.set()
+        await call.answer()
+        await call.message.edit_text(
+            text="Выберите шаблон, или используйте ввод.",
+            reply_markup=await inline.select_template_menu(templates_records)
+        )
+
+
+@dp.callback_query_handler(
+    ctypes.alpha_names.filter(),
+    state=CreateSmsSending.choose_alpha_name,
+)
+async def choose_alpha_name(
+        call: types.CallbackQuery,
+        state: FSMContext,
+        callback_data: dict
+    ):
+    async with state.proxy() as data:
+        data['alpha_name'] = callback_data['name']
+
     templates_records = await tempalte_api.get_all(
         owner_tg_id=call.message.chat.id,
     )
-    
     await CreateSmsSending.choose_template.set()
     await call.answer()
     await call.message.edit_text(
@@ -122,7 +159,9 @@ async def select_template_menu(
         access_key = data['access_key']
         file_path = data['file_path']
         mailing_system = data['mailing_system']
+        alpha_name = data['alpha_name']
 
+    if mailing_system == "sms-fly": alpha_name = "none" 
 
     # Запуск скрипта рассылки
     template_content = template.content.replace("'", '\'')
@@ -132,10 +171,10 @@ async def select_template_menu(
     if mailing_system == "sms-sms":
         # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
         # Пароль от аккаунта
-        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} &")
+        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} \"{alpha_name}\" &")
 
     else:
-        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None &")
+        os.system(f"nohup /home/sithsms/venv/bin/python3 /home/sithsms/sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None \"{alpha_name}\" &")
 
 
     sender = SmsSender(phones_file_path=file_path)
@@ -165,20 +204,23 @@ async def get_fast_template(message: types.Message, state: FSMContext):
         file_path = data['file_path']
         mailing_system = data['mailing_system']
         account_name = data['account_name']
+        alpha_name = data['alpha_name']
     
     # Запуск скрипта рассылки
     template_content = template_content.replace("'", '\'')
     template_content = template_content.replace('"', '\"')
 
-    logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template_content}, {file_path}")
+    if mailing_system == "sms-fly": alpha_name = "none" 
+
+    logger.debug(f"SEND SMS {mailing_system}, {access_key}, {template_content}, {file_path}, {alpha_name}")
     
     if mailing_system == "sms-sms":
         # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
         # Пароль от аккаунта
-        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} &")
+        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} \"{alpha_name}\" &")
 
     else:
-        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None &")
+        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None \"{alpha_name}\" &")
 
 
     sender = SmsSender(phones_file_path=file_path)

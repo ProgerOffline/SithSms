@@ -5,7 +5,12 @@ import requests
 
 
 class SmsClubService:
-    def __init__(self, access_key: str, account_name: str, proxy: str = ""):
+    def __init__(self,
+            access_key: str,
+            account_name: str,
+            proxy: str = "",
+            alpha_name: str="",
+        ):
         self.access_key = f"Bearer {access_key}"
         self.headers = {
             "Authorization": self.access_key,
@@ -17,12 +22,13 @@ class SmsClubService:
         else:
             self.use_proxy = True
         self.proxy = {"https" : proxy}
+        self.alpha_name = alpha_name
 
     def get_alpha_names(self):
         url = "https://im.smsclub.mobi/sms/originator"
         response = requests.post(url, headers=self.headers)
 
-        return response.json()
+        return response.json()['success_request']['info']
 
     def get_balance(self):
         url = "https://im.smsclub.mobi/sms/balance"
@@ -31,13 +37,10 @@ class SmsClubService:
         return response.json()
 
     def send_message_to_phone_number(self, phone_number: str, text: str):
-        alpha_names = self.get_alpha_names()['success_request']['info']        
-        alpha_name = random.choice(alpha_names)
-
         url = "https://im.smsclub.mobi/sms/send"
         request_data = {
             "phone": [phone_number],
-            "src_addr": alpha_name,
+            "src_addr": self.alpha_name,
             "message": text,
         }
 

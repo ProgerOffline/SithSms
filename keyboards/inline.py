@@ -84,7 +84,7 @@ async def accounts_menu(account_records):
 
     keyboard.add(
         types.InlineKeyboardButton(
-            text="↩️ Назад",
+            text="↩️        ",
             callback_data=ctypes.accounts_menu.new(
                 button="back",
                 id="",
@@ -337,3 +337,29 @@ async def edit_proxy(proxy):
             ),
         ), 
     )
+
+
+async def select_alpha_name(alpha_names: list):
+    keyboard = types.InlineKeyboardMarkup()
+
+    for name in alpha_names:
+        keyboard.add(
+            types.InlineKeyboardButton(
+                text=name,
+                callback_data=ctypes.alpha_names.new(
+                    name=name,
+                )
+            )
+        )
+    
+    keyboard.add(
+        types.InlineKeyboardButton(
+            text="↩️ Назад",
+            callback_data=ctypes.proxy.new(
+                action="back",
+                id="",
+            ),
+        ), 
+    )
+
+    return keyboard

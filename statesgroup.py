@@ -33,4 +33,5 @@ class EditTemplate(StatesGroup):
 class CreateSmsSending(StatesGroup):
     choose_mailing_system = State()
     choose_account = State()
+    choose_alpha_name = State()
     choose_template = State()

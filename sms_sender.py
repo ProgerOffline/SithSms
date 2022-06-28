@@ -7,16 +7,29 @@ from database import proxy_api
 from utils.smssender import SmsSender
 
 
-async def main(mailing_system, access_key, template_content, phones_file_path, account_name):
+async def main(
+        mailing_system,
+        access_key,
+        template_content,
+        phones_file_path,
+        account_name,
+        alpha_name,
+    ):
     await create_db(drop_all=False)
     # Запускаем рассылку
     proxy = await proxy_api.get_active()
+    if not proxy: proxy = ""
+
+    if alpha_name == "none":
+        alpha_name = None
+
     service = SmsSender(
         mailing_system=mailing_system,
         access_key=access_key,
         template_content=template_content,
         phones_file_path=phones_file_path,
         account_name=account_name,
+        alpha_name=alpha_name,
     )
 
     try:
@@ -28,5 +41,13 @@ async def main(mailing_system, access_key, template_content, phones_file_path, a
 
 if __name__ == "__main__":
     # Принимаем аргуметы
-    mailing_system, access_key, template_content, phones_file_path, account_name = sys.argv[1:]
-    asyncio.run(main(mailing_system, access_key, template_content, phones_file_path, account_name))
+    mailing_system,access_key, template_content, phones_file_path, account_name, alpha_name = sys.argv[1:]
+
+    asyncio.run(main(
+        mailing_system,
+        access_key,
+        template_content,
+        phones_file_path,
+        account_name,
+        alpha_name,
+    ))

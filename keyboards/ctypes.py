@@ -14,3 +14,5 @@ select_account_menu = CallbackData("select_account_menu", "action", "id")
 select_template_menu = CallbackData("select_tempalte_menu", "action", "id")
 
 proxy = CallbackData("proxy", "action", "id")
+
+alpha_names = CallbackData("alpha_names", "name")

@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/run/media/progeroffline/f512d2b1-436f-487e-aebb-d104b550bb4c/Документы/Work/TelegramBots/SithSms/SithSms_env/SithSms/sms_sender.py", line 44, in <module>
+    mailing_system,access_key, template_content,
+NameError: name 'mailing_system' is not defined
+Traceback (most recent call last):
+  File "/run/media/progeroffline/f512d2b1-436f-487e-aebb-d104b550bb4c/Документы/Work/TelegramBots/SithSms/SithSms_env/SithSms/sms_sender.py", line 44, in <module>
+    mailing_system,access_key, template_content, phones_file_path, account_name, alpha_name = sys.argv[1:]
+ValueError: not enough values to unpack (expected 6, got 5)
+Traceback (most recent call last):
+  File "/run/media/progeroffline/f512d2b1-436f-487e-aebb-d104b550bb4c/Документы/Work/TelegramBots/SithSms/SithSms_env/SithSms/sms_sender.py", line 44, in <module>
+    mailing_system,access_key, template_content, phones_file_path, account_name, alpha_name = sys.argv[1:]
+ValueError: not enough values to unpack (expected 6, got 5)
+Traceback (most recent call last):
+  File "/run/media/progeroffline/f512d2b1-436f-487e-aebb-d104b550bb4c/Документы/Work/TelegramBots/SithSms/SithSms_env/SithSms/sms_sender.py", line 44, in <module>
+    mailing_system,access_key, template_content, phones_file_path, account_name, alpha_name = sys.argv[1:]
+ValueError: too many values to unpack (expected 6)
+[I 220628 15:55:29 __init__:81] {'success_request': {'info': {'1000306347': '380507496037'}}}
