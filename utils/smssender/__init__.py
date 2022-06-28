@@ -27,7 +27,7 @@ class SmsSender:
         self.mailing_services = {
             "sms-fly" : SmsFlyService,
             "sms-sms" : SmsSmsService,
-            "sms-club": SmsClubService,
+            "smsclub": SmsClubService,
         }
     
     def __sort_phones(self, phones_file_path: str) -> list:
