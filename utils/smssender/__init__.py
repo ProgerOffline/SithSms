@@ -16,7 +16,7 @@ class SmsSender:
         access_key: str='',
         template_content: str='',
         account_name: str='',
-        proxy: str='',
+        proxy=None,
     ):
 
         self.mailing_system = mailing_system
