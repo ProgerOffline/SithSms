@@ -217,10 +217,10 @@ async def get_fast_template(message: types.Message, state: FSMContext):
     if mailing_system == "sms-sms":
         # В шлюзе sms-sms.com.ua, для авторизации используется номер телефона и 
         # Пароль от аккаунта
-        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} \"{alpha_name}\" &")
+        os.system(f"nohup /home/sithsms/venv/bin/python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} {account_name} \"{alpha_name}\" &")
 
     else:
-        os.system(f"nohup python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None \"{alpha_name}\" &")
+        os.system(f"nohup /home/sithsms/venv/bin/python3 sms_sender.py {mailing_system} {access_key} \"{template_content}\" {file_path} None \"{alpha_name}\" &")
 
 
     sender = SmsSender(phones_file_path=file_path)
